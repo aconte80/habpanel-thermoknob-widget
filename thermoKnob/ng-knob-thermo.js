@@ -170,40 +170,41 @@
     }
 
     if(this.options.displayInput) {
-      var fontSize = 72;
-      if(this.options.fontSize !== 'auto') { fontSize = parseInt(this.options.fontSize); }
-      var v = this.value.toFixed(0);
+      var fontSize = 50;
+      if(this.options.subText.font !== 'auto') {
+        fontSize = parseInt(this.options.subText.font);
+      }
+      // we keep 1 decimal or 0 if integer
+      var v = Math.round(this.current*10)/10;
       if (typeof this.options.inputFormatter === "function"){
-          v = this.options.inputFormatter(this.value);
+        v = this.options.inputFormatter(this.current);
       }else if( this.options.step < 1) {
-	  fontSize=fontSize*0.8; // smaller when we have decimal
-	  v = this.value.toFixed(1);
+  v = v.toFixed(1);
       }
       svg.append('text')
-      .attr('id', 'text')
+      .attr('class', 'sub-text')
       .attr("text-anchor", "middle")
       .attr("font-size", fontSize+"px")
-      .style("fill", this.options.textColor)
+      .style("fill", this.options.subText.color)
       .text(v + ""+this.options.unit || "")
       .attr('transform', 'translate(' + (300/2) + ', ' + ((300/2)+0 ) + ')');
 
       if(this.options.subText.enabled) {
         fontSize = 40;
-        if(this.options.subText.font !== 'auto') {
-          fontSize = parseInt(this.options.subText.font);
-        }
-	      // we keep 1 decimal or 0 if integer
-        var v = Math.round(this.current*10)/10;
+
+        if(this.options.fontSize !== 'auto') { fontSize = parseInt(this.options.fontSize); }
+        var v = this.value.toFixed(0);
         if (typeof this.options.inputFormatter === "function"){
-          v = this.options.inputFormatter(this.current);
+            v = this.options.inputFormatter(this.value);
         }else if( this.options.step < 1) {
-	  v = v.toFixed(1);
+      fontSize=fontSize*0.8; // smaller when we have decimal
+      v = this.value.toFixed(1);
         }
         svg.append('text')
-        .attr('class', 'sub-text')
+        .attr('id', 'text')
         .attr("text-anchor", "middle")
         .attr("font-size", fontSize+"px")
-        .style("fill", this.options.subText.color)
+        .style("fill", this.options.textColor)
         //.text(this.options.subText.text)
         .text(v+""+this.options.unit || "")
         .attr('transform', 'translate(' + (300/2) + ', ' + ((300/2) + fontSize) + ')');
